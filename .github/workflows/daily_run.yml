@@ -1,0 +1,31 @@
+name: Daily Supply Chain Alert
+
+on:
+  schedule:
+    # Jalan tiap jam 00:00 UTC (Jam 07:00 WIB Pagi)
+    - cron: '0 0 * * *'
+  # Supaya bisa ditest manual sekarang
+  workflow_dispatch:
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Ambil kode
+        uses: actions/checkout@v3
+
+      - name: Siapkan Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install Requests
+        run: pip install requests
+
+      - name: Jalankan Script Utama
+        env:
+          # Ambil kunci dari brankas GitHub
+          OWM_API_KEY: ${{ secrets.OWM_API_KEY }}
+          SHEET_WEBHOOK: ${{ secrets.SHEET_WEBHOOK }}
+        run: python main.py
