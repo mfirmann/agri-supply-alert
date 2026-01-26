@@ -166,8 +166,8 @@ Masuk ke **Settings → Secrets → Actions**, lalu tambahkan:
 **[Nama Anda]**
 Data Analyst Enthusiast | Supply Chain Specialist
 
-* 💼 LinkedIn: [LinkedIn Profile]
-* ✉️ Email: [Email Address]
+* 💼 LinkedIn: https://www.linkedin.com/in/m-firman-n/
+* ✉️ Email: m.firman.n000@gmail.com
 
 ---
 
