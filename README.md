@@ -24,7 +24,7 @@ Sistem ini memberikan **notifikasi dini** kepada tim **Procurement** agar dapat:
 ---
 
 ## 📸 Dashboard Preview
-🔗 **View Live Dashboard:** [https://lookerstudio.google.com/xxxxx](https://lookerstudio.google.com/reporting/21bfc5c6-edc1-4928-96b2-2028d05a0126)
+🔗 [**View Live Dashboard:**](https://lookerstudio.google.com/reporting/21bfc5c6-edc1-4928-96b2-2028d05a0126)
 <img src="Dashboard/dashboard_preview.png" width="900"/>
 
 > *(Klik gambar di atas untuk melihat Dashboard Interaktif)*
