@@ -25,7 +25,7 @@ Sistem ini memberikan **notifikasi dini** kepada tim **Procurement** agar dapat:
 
 ## 📸 Dashboard Preview
 
-> *(Klik gambar di atas untuk melihat Dashboard Interaktif)*
+>Dashboard/dashboard_preview.png *(Klik gambar di atas untuk melihat Dashboard Interaktif)*
 
 ### Fitur Utama Dashboard
 
