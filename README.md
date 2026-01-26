@@ -1,143 +1,173 @@
-⛈️ Agri-Supply Chain Risk Monitor System
+# ⛈️ Agri-Supply Chain Risk Monitor System
 
-Quick Links: View Live Dashboard | View Automation Script
+## 📌 Executive Summary
 
-📌 Executive Summary
+### The Business Problem
 
-The Business Problem
+Dalam industri **F&B** dan **Manufaktur**, sekitar **60% gangguan rantai pasok di sektor hulu (pertanian)** disebabkan oleh faktor **cuaca tak terduga**. Dampaknya antara lain:
 
-Dalam industri F&B dan Manufaktur, 60% gangguan rantai pasok di sektor hulu (pertanian) disebabkan oleh faktor cuaca tak terduga. Hal ini sering mengakibatkan gagal panen, keterlambatan logistik, dan lonjakan harga bahan baku (Surge Pricing) hingga 20% yang menggerus margin keuntungan perusahaan.
+* Gagal panen
+* Keterlambatan logistik
+* Lonjakan harga bahan baku (*surge pricing*) hingga **±20%**
 
-The Solution
+Kondisi ini secara langsung menggerus **margin keuntungan perusahaan**.
 
-Membangun Automated Early Warning System (EWS) yang bekerja 24/7 untuk memantau risiko cuaca di sentra produksi utama secara Real-Time. Sistem ini memberikan notifikasi dini kepada tim Procurement untuk mengamankan stok sebelum harga pasar naik.
+### The Solution
 
-📸 Dashboard Preview
+Membangun **Automated Early Warning System (EWS)** yang berjalan **24/7** untuk memantau risiko cuaca di sentra produksi utama secara **real-time**.
 
-(Klik gambar di atas untuk melihat Dashboard Interaktif)
+Sistem ini memberikan **notifikasi dini** kepada tim **Procurement** agar dapat:
 
-Fitur Utama Dashboard:
+* Mengamankan stok lebih awal
+* Menghindari pembelian panik saat harga melonjak
 
-Geo-Spatial Tracking: Peta risiko visual untuk memantau sentra produksi (Lampung, Brebes, Boyolali).
+---
 
-Real-time Alert Table: Tabel prioritas yang menyorot status "BAHAYA" (Merah) dan "WASPADA" (Kuning).
+## 📸 Dashboard Preview
 
-Trend Analysis: Grafik tren curah hujan 7 hari terakhir.
+> *(Klik gambar di atas untuk melihat Dashboard Interaktif)*
 
-⚙️ How It Works (Automated Pipeline)
+### Fitur Utama Dashboard
 
-Sistem ini dirancang dengan arsitektur Serverless dan Zero-Cost menggunakan GitHub Actions.
+* **Geo-Spatial Tracking**
+  Peta risiko visual untuk memantau sentra produksi utama:
 
-Ingestion: Python menarik data ramalan cuaca (24 jam ke depan) untuk titik sentinel komoditas utama:
+  * Lampung
+  * Brebes
+  * Boyolali
 
-Kopi Robusta (Lampung Barat)
+* **Real-time Alert Table**
+  Tabel prioritas yang menyorot status:
 
-Bawang Merah (Brebes)
+  * 🔴 **BAHAYA**
+  * 🟡 **WASPADA**
 
-Susu Sapi (Boyolali)
+* **Trend Analysis**
+  Grafik tren curah hujan **7 hari terakhir**
 
-Processing: Script menghitung akumulasi curah hujan dan menentukan status risiko:
+---
 
-3 - BAHAYA: Hujan > 50mm (Potensi Gagal Panen/Banjir).
+## ⚙️ How It Works (Automated Pipeline)
 
-2 - WASPADA: Hujan > 10mm (Potensi Logistik Terhambat).
+Sistem dirancang dengan arsitektur **Serverless** dan **Zero-Cost** menggunakan **GitHub Actions**.
 
-1 - AMAN: Hujan < 10mm.
+### 1️⃣ Ingestion
 
-Loading: Data dikirim via Webhook ke Google Sheets secara real-time.
+Python script menarik data **ramalan cuaca 24 jam ke depan** untuk titik sentinel komoditas utama:
 
-Reporting: Looker Studio memvisualisasikan data terbaru untuk pengambilan keputusan manajerial.
+* ☕ **Kopi Robusta** – Lampung Barat
+* 🧅 **Bawang Merah** – Brebes
+* 🥛 **Susu Sapi** – Boyolali
 
-📊 Key Insights & Impact
+### 2️⃣ Processing
+
+Script menghitung **akumulasi curah hujan** dan menentukan status risiko:
+
+| Risk Level | Status     | Threshold Curah Hujan | Dampak Utama                 |
+| ---------: | ---------- | --------------------- | ---------------------------- |
+|          3 | 🔴 BAHAYA  | > 50 mm               | Potensi gagal panen / banjir |
+|          2 | 🟡 WASPADA | > 10 mm               | Potensi logistik terhambat   |
+|          1 | 🟢 AMAN    | < 10 mm               | Risiko minimal               |
+
+### 3️⃣ Loading
+
+Data dikirim secara **real-time** melalui **Webhook** ke **Google Sheets** sebagai:
+
+* Data store
+* Log historis
+
+### 4️⃣ Reporting
+
+**Looker Studio** digunakan untuk memvisualisasikan data terbaru guna mendukung:
+
+* Pengambilan keputusan manajerial
+* Respons cepat lintas tim
+
+---
+
+## 📊 Key Insights & Business Impact
 
 Berdasarkan simulasi monitoring data historis cuaca:
 
-Proactive Procurement: Sistem berhasil mendeteksi risiko hujan lebat di Brebes 2 hari sebelum kejadian, memberikan waktu bagi tim untuk melakukan stockpiling bawang merah.
+### 🔎 Proactive Procurement
 
-Logistics Optimization: Notifikasi "WASPADA" di jalur Boyolali membantu tim logistik mengalihkan rute pengiriman susu, mencegah keterlambatan 4 jam.
+* Sistem mendeteksi **risiko hujan lebat di Brebes** **2 hari lebih awal**
+* Memberikan waktu bagi tim untuk melakukan **stockpiling bawang merah**
 
-Cost Saving: Potensi penghematan biaya pengadaan sebesar ~15% dengan menghindari pembelian panik (panic buying) saat cuaca buruk terjadi.
+### 🚚 Logistics Optimization
 
-🛠️ Tools & Technologies
+* Status **WASPADA** di Boyolali membantu tim:
 
-Category
+  * Mengalihkan rute pengiriman susu
+  * Mencegah keterlambatan hingga **±4 jam**
 
-Tools Used
+### 💰 Cost Saving
 
-Purpose
+* Potensi penghematan biaya pengadaan sekitar **±15%**
+* Menghindari **panic buying** saat cuaca ekstrem
 
-Language
+---
 
-Python 3.9
+## 🛠️ Tools & Technologies
 
-Logika ekstraksi data & risk assessment
+| Category      | Tools Used         | Purpose                          |
+| ------------- | ------------------ | -------------------------------- |
+| Language      | Python 3.9         | Ekstraksi data & risk assessment |
+| API           | OpenWeatherMap     | Data cuaca real-time & forecast  |
+| Automation    | GitHub Actions     | Penjadwalan otomatis (Cronjob)   |
+| Database      | Google Sheets      | Penyimpanan data & log historis  |
+| Integration   | Google Apps Script | Webhook receiver (doPost)        |
+| Visualization | Looker Studio      | Dashboard interaktif manajemen   |
 
-API
+---
 
-OpenWeatherMap
+## 📂 Project Structure
 
-Sumber data cuaca real-time & forecast
+```text
+.
+├── .github/workflows/   # Konfigurasi jadwal otomatis (YAML)
+├── dashboard/           # Aset gambar dashboard
+├── main.py              # Script utama (Python)
+├── requirements.txt     # Daftar library Python
+└── README.md            # Dokumentasi project
+```
 
-Automation
+---
 
-GitHub Actions
+## 🚀 How to Run / Replicate
 
-Penjadwalan otomatis (Cronjob)
+Project ini bersifat **Open Source** dan dapat dimodifikasi untuk lokasi atau komoditas lain.
 
-Database
+### 1️⃣ Clone Repository
 
-Google Sheets
+```bash
+git clone https://github.com/username/agri-supply-alert.git
+```
 
-Penyimpanan data & log historis
+### 2️⃣ Set Secrets (GitHub)
 
-Integration
+Masuk ke **Settings → Secrets → Actions**, lalu tambahkan:
 
-Google Apps Script
+| Secret Name     | Description                    |
+| --------------- | ------------------------------ |
+| `OWM_API_KEY`   | API Key OpenWeatherMap         |
+| `SHEET_WEBHOOK` | URL Web App Google Apps Script |
 
-Webhook receiver (DoPost)
+### 3️⃣ Run Workflow
 
-Visualization
+* Jalankan manual melalui tab **Actions**, atau
+* Tunggu jadwal otomatis (**07:00 WIB**)
 
-Looker Studio
+---
 
-Dashboard interaktif manajemen
+## 📬 Contact
 
-📂 Project Structure
-
-├── .github/workflows/  # Konfigurasi jadwal otomatis (YAML)
-├── dashboard/          # Aset gambar dashboard
-├── main.py             # Script utama (Python)
-├── requirements.txt    # Daftar library Python
-└── README.md           # Dokumentasi Project
-
-
-🚀 How to Run / Replicate
-
-Project ini bersifat Open Source. Anda bisa menduifikasinya untuk memantau lokasi lain:
-
-Clone Repository:
-
-git clone [https://github.com/username/agri-supply-alert.git](https://github.com/username/agri-supply-alert.git)
-
-
-Set Secrets:
-Masuk ke Settings > Secrets di GitHub dan tambahkan:
-
-OWM_API_KEY: API Key OpenWeatherMap Anda.
-
-SHEET_WEBHOOK: URL Web App Google Script Anda.
-
-Run:
-Masuk ke tab Actions dan jalankan workflow secara manual atau tunggu jadwal otomatis (07:00 WIB).
-
-📬 Contact
-
-[Nama Anda]
-
+**[Nama Anda]**
 Data Analyst Enthusiast | Supply Chain Specialist
 
-LinkedIn Profile
+* 💼 LinkedIn: [LinkedIn Profile]
+* ✉️ Email: [Email Address]
 
-Email Address
+---
 
-Project ini dibuat sebagai bagian dari Portofolio Data Analytics.
+> Project ini dibuat sebagai bagian dari **Portofolio Data Analytics** dan berfokus pada penerapan data untuk mitigasi risiko rantai pasok sektor agrikultur.
