@@ -163,8 +163,8 @@ Masuk ke **Settings → Secrets → Actions**, lalu tambahkan:
 
 ## 📬 Contact
 
-**[Nama Anda]**
-Data Analyst Enthusiast | Supply Chain Specialist
+**Maulana Firman Nurdiansyah**
+Data Analyst & Business Intelligent | Mathematics Graduate | TensorFlow Certified | Ex-Retail Entrepreneur
 
 * 💼 LinkedIn: https://www.linkedin.com/in/m-firman-n/
 * ✉️ Email: m.firman.n000@gmail.com
