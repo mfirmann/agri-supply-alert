@@ -1,11 +1,10 @@
-name: TEST - Supply Chain Alert (5 Minutes)
+name: Daily Supply Chain Alert
 
 on:
-  # Jalan tiap 5 menit (UNTUK TES SAJA)
   schedule:
-    - cron: '*/5 * * * *'
+    # Jam 00:00 UTC = 07:00 WIB
+    - cron: '0 0 * * *'
 
-  # Tetap bisa manual
   workflow_dispatch:
 
 jobs:
@@ -30,7 +29,4 @@ jobs:
         env:
           OWM_API_KEY: ${{ secrets.OWM_API_KEY }}
           SHEET_WEBHOOK: ${{ secrets.SHEET_WEBHOOK }}
-        run: |
-          echo "=== START PYTHON SCRIPT ==="
-          python main.py
-          echo "=== END PYTHON SCRIPT ==="
+        run: python main.py
