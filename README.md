@@ -175,4 +175,5 @@ Data Analyst & Business Intelligent | Mathematics Graduate | TensorFlow Certifie
 > Project ini dibuat sebagai bagian dari **Portofolio Data Analytics** dan berfokus pada penerapan data untuk mitigasi risiko rantai pasok sektor agrikultur.
 >
 > <!-- scheduler activation commit -->
+> <!-- scheduler activation commit -->
 
