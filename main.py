@@ -1,13 +1,16 @@
 import requests
 import datetime
-import json
 import os
+import sys
 
-# --- BAGIAN INI BACA DARI RAHASIA GITHUB ---
-OWM_API_KEY = os.environ["OWM_API_KEY"]
-SHEET_WEBHOOK_URL = os.environ["SHEET_WEBHOOK"]
+# --- BACA DARI RAHASIA GITHUB ---
+try:
+    OWM_API_KEY = os.environ["OWM_API_KEY"]
+    SHEET_WEBHOOK_URL = os.environ["SHEET_WEBHOOK"]
+except KeyError as e:
+    print(f"❌ Error: Secret {e} tidak ditemukan di GitHub Settings!")
+    sys.exit(1)
 
-# Daftar Lokasi
 LOCATIONS = [
     {"name": "Lampung Barat", "lat": "-5.03", "lon": "104.09", "item": "Kopi Robusta"},
     {"name": "Brebes", "lat": "-6.87", "lon": "109.03", "item": "Bawang Merah"},
@@ -17,12 +20,13 @@ LOCATIONS = [
 def get_weather(lat, lon):
     url = f"https://api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid={OWM_API_KEY}&units=metric"
     try:
-        resp = requests.get(url)
+        resp = requests.get(url, timeout=10)
+        resp.raise_for_status()
         data = resp.json()
         total_rain = 0
         desc_list = []
         if 'list' in data:
-            for i in range(min(8, len(data['list']))): # Cek 24 jam ke depan
+            for i in range(min(8, len(data['list']))): # 24 jam ke depan
                 item = data['list'][i]
                 if 'rain' in item and '3h' in item['rain']:
                     total_rain += item['rain']['3h']
@@ -32,34 +36,41 @@ def get_weather(lat, lon):
             return total_rain, ", ".join(desc_list)
         return 0, "No Data"
     except Exception as e:
-        print(f"Error API: {e}")
+        print(f"⚠️ API Weather Error: {e}")
         return 0, "Error"
 
 def check_risk(rain):
-    # Status pakai angka biar mudah diurutkan di Dashboard
     if rain > 50: return "3 - BAHAYA", "STOP KIRIM / CEK GUDANG"
     elif rain > 10: return "2 - WASPADA", "PANTAU KETAT"
     else: return "1 - AMAN", "Lanjut Operasi"
 
 if __name__ == "__main__":
-    print(f"--- RUNNING JOB: {datetime.datetime.now()} ---")
+    now = datetime.datetime.now()
+    # Deteksi apakah dijalankan oleh GitHub Actions atau Manual
+    run_mode = "GitHub_Scheduled" if os.getenv("GITHUB_ACTIONS") else "Manual_Local"
+    
+    print(f"🚀 Memulai Job | Waktu: {now} | Mode: {run_mode}")
+    
     for loc in LOCATIONS:
         rain, desc = get_weather(loc['lat'], loc['lon'])
         status, rek = check_risk(rain)
         
         payload = {
-            "timestamp": str(datetime.datetime.now()),
+            "timestamp": now.strftime("%Y-%m-%d %H:%M:%S"),
             "lokasi": loc['name'],
             "komoditas": loc['item'],
             "cuaca": desc,
             "hujan": round(rain, 2),
             "status": status,
-            "rekomendasi": rek
+            "rekomendasi": rek,
+            "trigger": run_mode # Kita tambah kolom trigger
         }
         
         try:
-            # Kirim ke Google Sheet
-            requests.post(SHEET_WEBHOOK_URL, json=payload)
-            print(f"✅ Terkirim: {loc['name']} | Hujan: {rain}mm")
+            response = requests.post(SHEET_WEBHOOK_URL, json=payload, timeout=15)
+            response.raise_for_status()
+            print(f"✅ Berhasil Kirim: {loc['name']} (Status: {response.status_code})")
         except Exception as e:
-            print(f"❌ Gagal: {loc['name']} - {e}")
+            print(f"❌ Gagal Kirim {loc['name']}: {e}")
+
+    print("--- Job Selesai ---")
