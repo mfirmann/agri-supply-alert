@@ -1,41 +1,36 @@
-name: Daily Supply Chain Alert
+name: TEST - Supply Chain Alert (5 Minutes)
 
-# Kapan script ini dijalankan?
 on:
+  # Jalan tiap 5 menit (UNTUK TES SAJA)
   schedule:
-    # CRON JOB: Menentukan waktu jalan otomatis
-    # Format: Menit Jam * * * (Waktu UTC)
-    # Jam 00:00 UTC = Jam 07:00 WIB (Pagi hari di Indonesia)
-    - cron: '0 0 * * *'
-  
-  # Tombol manual buat ngetes (biar gak nunggu besok pagi)
+    - cron: '*/5 * * * *'
+
+  # Tetap bisa manual
   workflow_dispatch:
 
 jobs:
   run-weather-check:
-    runs-on: ubuntu-latest  # Pinjam komputer Linux gratis dari GitHub
+    runs-on: ubuntu-latest
 
     steps:
-      # 1. Ambil kode dari repository ini
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      # 2. Siapkan Python
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.9'
 
-      # 3. Install Library (requests)
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install requests
 
-      # 4. Jalankan Script Python
       - name: Run Weather Script
         env:
-          # Ambil kunci rahasia yang sudah disave di Settings
           OWM_API_KEY: ${{ secrets.OWM_API_KEY }}
           SHEET_WEBHOOK: ${{ secrets.SHEET_WEBHOOK }}
-        run: python main.py
+        run: |
+          echo "=== START PYTHON SCRIPT ==="
+          python main.py
+          echo "=== END PYTHON SCRIPT ==="
