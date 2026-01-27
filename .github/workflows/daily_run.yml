@@ -2,21 +2,21 @@ name: Daily Supply Chain Alert
 
 on:
   schedule:
-    # Jam 00:00 UTC = 07:00 WIB
-    - cron: '0 0 * * *'
+    # Run daily at 20:00 WIB (13:00 UTC)
+    - cron: '0 13 * * *'
 
   workflow_dispatch:
 
 jobs:
-  run-weather-check:
+  run-supply-chain-alert:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v4
         with:
           python-version: '3.9'
 
@@ -25,7 +25,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install requests
 
-      - name: Run Weather Script
+      - name: Run Supply Chain Monitoring Script
         env:
           OWM_API_KEY: ${{ secrets.OWM_API_KEY }}
           SHEET_WEBHOOK: ${{ secrets.SHEET_WEBHOOK }}
