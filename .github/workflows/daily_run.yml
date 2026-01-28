@@ -1,22 +1,20 @@
-name: Daily Supply Chain Alert
+name: Supply Chain Risk Monitoring
 
 on:
   schedule:
-    # Run daily at 20:00 WIB (13:00 UTC)
-    - cron: '0 13 * * *'
+    # Run every 6 hours (07:00 / 13:00 / 19:00 / 01:00 WIB)
+    - cron: '0 */6 * * *'
 
   workflow_dispatch:
 
 jobs:
-  run-supply-chain-alert:
+  run-monitoring:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
+      - uses: actions/setup-python@v4
         with:
           python-version: '3.9'
 
@@ -25,7 +23,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install requests
 
-      - name: Run Supply Chain Monitoring Script
+      - name: Run Monitoring Script
         env:
           OWM_API_KEY: ${{ secrets.OWM_API_KEY }}
           SHEET_WEBHOOK: ${{ secrets.SHEET_WEBHOOK }}
